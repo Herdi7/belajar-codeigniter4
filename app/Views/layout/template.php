@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title; ?></title>
     <!-- css -->
-    <link rel="stylesheet" href="css/style_dev.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- icon -->
     <link rel="stylesheet" href="icon/all.min.css">
 </head>
