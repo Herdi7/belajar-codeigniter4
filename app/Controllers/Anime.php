@@ -40,14 +40,30 @@ class Anime extends BaseController
 
     public function create()
     {
+        $validation = \Config\Services::validation();
         $data = [
             'title' => 'Tambah Anime',
+            'validation' => $validation
         ];
         return view('anime/create', $data);
     }
 
     public function save()
     {
+
+        if( !$this->validate([
+            'judul' => [
+                'rules' => 'required|is_unique[anime.judul]',
+                'errors' => [
+                    'required' => 'judul harus diisi',
+                    'is_unique' => '{field} Telah ada, gunakan judul lain'
+                    ]
+                ]
+        ]) ){
+            $validation = \Config\Services::validation();
+            return redirect()->to('http://localhost:8080/Anime/create', null)->withinput()->with('validation', $validation);
+        }
+
         $data = [
             'judul' => $this->request->getVar('judul'),
             'slug' => url_title($this->request->getVar('judul'), '-', true),
