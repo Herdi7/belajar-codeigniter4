@@ -77,5 +77,57 @@ class Anime extends BaseController
         session()->setFlashData('tambah', 'Anime berhasil dimasukkan ke dalam list');
         return redirect()->to('http://localhost:8080/Anime/', null, 'index');
     }
+    
+    public function delete($id)
+    {
+        $this->model->delete($id);
+        return redirect()->to('http://localhost:8080/Anime/', null, 'index');
+    }
 
+    public function edit($slug)
+    {
+        $validation = \Config\Services::validation();
+        $data = [
+            'title' => 'Ubah Anime',
+            'validation' => $validation,
+            'anime' => $this->model->getAnime($slug)
+        ];
+
+        return view('anime/edit', $data);
+    }
+
+    public function update($id)
+    {
+        $judulLama = $this->model->getAnime($this->request->getVar('slug'));
+        if( $judulLama['judul'] == $this->request->getVar('judul')){
+            $rule_judul = 'required';
+        } else {
+            $rule_judul = 'required|is_unique[anime.judul]';
+        }
+        if( !$this->validate([
+            'judul' => [
+                'rules' => $rule_judul,
+                'errors' => [
+                    'required' => 'judul harus diisi',
+                    'is_unique' => '{field} Telah ada, gunakan judul lain'
+                    ]
+                ]
+        ]) ){
+            $validation = \Config\Services::validation();
+            return redirect()->to('http://localhost:8080/Anime/edit/'. $this->request->getVar('slug'))->withinput()->with('validation', $validation);
+        }
+        $data = [
+            'id' => $id,
+            'judul' => $this->request->getVar('judul'),
+            'slug' => url_title($this->request->getVar('judul'), '-', true),
+            'produser' => $this->request->getVar('produser'),
+            'img' => $this->request->getVar('img')
+        ];
+        
+        $this->model->save($data);
+
+         // set session
+         session()->setFlashData('tambah', 'Anime berhasil diubah');
+         return redirect()->to('http://localhost:8080/Anime/', null, 'index');
+     }
 }

@@ -32,6 +32,8 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->delete('/Anime/(:int)', 'Anime::delete/$1');
+$routes->get('/Anime/edit/(:any)', 'Anime::edit/$1');
 $routes->get('/Anime/create', 'Anime::create');
 $routes->get('/Anime/save', 'Anime::save');
 $routes->get('/Anime/(:any)', 'Anime::detail/$1');

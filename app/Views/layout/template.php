@@ -28,12 +28,10 @@
 
     <!-- js -->
     <script src="js/jquery-3.6.0.js"></script>
-    <script src="js/script.js"></script>
     <!-- bootstrap -->
     <script src="js/bootstrap.min.js"></script>
-    <!-- icon -->
-    <script src="icon/all.min.js"></script>
-
+    <!-- my script -->
+    <script src="js/script.js"></script>
 
 </body>
 
