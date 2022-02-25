@@ -14,10 +14,10 @@
                     <p class="card-text"><small class="text-muted"><?= $anime['create_at']; ?></small></p>
                     <a href="/Anime">Kembali</a>
                 </div>
-
-                <form action="/Anime/<?= $anime['id']; ?>" method="post" class="d-inline">
+                <form action="/Anime/delete/<?= $animeId ?>" method="post" class="d-inline">
                     <?= csrf_field( ); ?>
                     <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="slug" value="<?= $anime['slug']; ?>">
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapusnya')">Delete</button>
                 </form>
                 <a href="/Anime/edit/<?= $anime['slug']; ?>" class="btn btn-success">Edit</a>
