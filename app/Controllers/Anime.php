@@ -52,22 +52,22 @@ class Anime extends BaseController
     {
 
         if( !$this->validate([
-            'img' => [
-                'rules' => 'max_size[img, 2048]|mime_in[img,image/png,image/jpg]|ext_in[img,jpg,jpeg,png]|is_image[img]',
-                'errors' => [
-                    'max_size' => 'file yang diupload terlalu besar',
-                    'mime_in' => 'file yang anda masukkan bukanlah gambar',
-                    'ext_in' => 'hanya dapat memasukkan file yang memiliki ekstensi jpg, jpeg dan png',
-                    'is_image' => 'anda harus memasukkan gambar'
-                ]
-            ],
             'judul' => [
                 'rules' => 'required|is_unique[anime.judul]',
                 'errors' => [
                     'required' => 'judul harus diisi',
                     'is_unique' => '{field} Telah ada, gunakan judul lain'
-                ]
-            ],
+                    ]
+                ],
+                'img' => [
+                    'rules' => 'max_size[img, 2048]|mime_in[img,image/png,image/jpg]|ext_in[img,jpg,jpeg,png]|is_image[img]',
+                    'errors' => [
+                        'max_size' => 'file yang diupload terlalu besar',
+                        'mime_in' => 'file yang anda masukkan bukanlah gambar',
+                        'ext_in' => 'hanya dapat memasukkan file yang memiliki ekstensi jpg, jpeg dan png',
+                        'is_image' => 'anda harus memasukkan gambar'
+                    ]
+                ],
         ]) ){
             return redirect()->to('http://localhost:8080/Anime/create', null)->withinput();
         }
@@ -144,12 +144,23 @@ class Anime extends BaseController
                 ]
             ]
         ]) ){
-            $validation = \Config\Services::validation();
-            return redirect()->to('http://localhost:8080/Anime/edit/'. $this->request->getVar('slug'))->withinput()->with('validation', $validation);
+            return redirect()->to('http://localhost:8080/Anime/edit/'. $this->request->getVar('slug'))->withinput();
         }
-        $img = $this->request->getVar('img');
-        if( $dataLama['img'] != $img ){
-            unlink($dataLama['img']);
+        
+        $imgLama = $this->request->getVar('imgLama');
+        $img = $this->request->getFile('img');
+        // jika image di ubah
+        if( $img->getError() == 4 ){
+            $imgName = $imgLama;
+        } else {
+            $imgName = $img->getRandomName();
+            if( $imgLama != 'default.jpg' ) {
+                if( file_exists('img/'. $imgLama) ){                    
+                    unlink('img/'. $imgLama );
+                }
+                $imgName = $img->getRandomName();
+                $img->move('img', $imgName);
+            }
         }
         
         $data = [
@@ -157,7 +168,7 @@ class Anime extends BaseController
             'judul' => $this->request->getVar('judul'),
             'slug' => url_title($this->request->getVar('judul'), '-', true),
             'produser' => $this->request->getVar('produser'),
-            'img' => $img
+            'img' => $imgName
         ];
         
         $this->model->save($data);
