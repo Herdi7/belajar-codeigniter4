@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AnimeModels;
+
 $session = \Config\Services::session();
 
 class Anime extends BaseController
