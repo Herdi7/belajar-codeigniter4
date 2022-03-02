@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
   <div class="container-fluid text-center">
     <a class="navbar-brand" href="#">CI4 App</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,7 +13,7 @@
           <a class="nav-link" href="/Anime">Anime</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/About">About</a>
+          <a class="nav-link" href="/Pegawai">Pegawai</a>
         </li>
       </ul>
     </div>
